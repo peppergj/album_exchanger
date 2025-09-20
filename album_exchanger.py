@@ -22,6 +22,9 @@ async def on_ready():
     await tree.sync()
     print("oh ok hi")
 
-with open("token.txt", "r") as tokenfile: 
-    token = tokenfile.readlines()[0]
-client.run(token)
+try:
+    with open("token.txt", "r") as tokenfile: 
+        token = tokenfile.readlines()[0]
+    client.run(token)
+except:
+    print("Could not find token.txt, which must contain your discord bot token")
