@@ -12,15 +12,25 @@ async def hello(interaction: discord.Interaction):
     await interaction.response.send_message("https://open.spotify.com/album/6hPkbAV3ZXpGZBGUvL6jVM?si=NSetYITLRyCFkQ6BVLIkKA")
 
 @tree.command(name="draw-names", description="draw-names-randomly")
-async def world(interaction:discord.Interaction):
-        with open("name_list.txt", "r") as f:
-            content = f.read()
-        await interaction.response.send_message(content)
+@app_commands.describe(names="Enter names separated by commas")
+async def pair_names(interaction: discord.Interaction, names: str):
+    name_list = [name.strip() for name in names.split(",") if name.strip()]
+    if len(name_list) < 2:
+        await interaction.response.send_message("Please provide at least 2 names for pairing.", ephemeral=True)
+        return
+    random.shuffle(name_list)
+    pairs = []
+    for i in range(0, len(name_list), 2):
+        if i + 1 < len(name_list):
+            pairs.append(f"{name_list[i]} and {name_list[i + 1]}")
+        else:
+            pairs.append(f"{name_list[i]} is lonely lol")
+    await interaction.response.send_message("Here are the exchange pairs:\n" + "\n".join(pairs))
 
 @client.event
 async def on_ready():
     await tree.sync()
-    print("oh ok hi")
+    print("Successfully Connected! 10% Off any album bought with Nitro!")
 
 try:
     with open("token.txt", "r") as tokenfile: 
