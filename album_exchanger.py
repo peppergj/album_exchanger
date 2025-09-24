@@ -6,7 +6,6 @@ from discord.ext import commands
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
-bot = client
 
 @tree.command(name="test", description="test-album")
 async def hello(interaction: discord.Interaction):
