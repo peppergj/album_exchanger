@@ -6,10 +6,20 @@ from discord.ext import commands
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
+bot = client
 
 @tree.command(name="test", description="test-album")
 async def hello(interaction: discord.Interaction):
     await interaction.response.send_message("https://open.spotify.com/album/6hPkbAV3ZXpGZBGUvL6jVM?si=NSetYITLRyCFkQ6BVLIkKA")
+
+@tree.command(name="album", description="random-album!")
+async def readfile(interaction: discord.Interaction):
+    try:
+        with open("albums.txt", "r") as file:
+            choice = random.choice(lines)
+        await interaction.response.send_message(choice)
+    except FileNotFoundError:
+        await interaction.response.send_message("File not found.")
 
 @tree.command(name="draw-names", description="draw-names-randomly")
 @app_commands.describe(names="Enter names separated by commas")
