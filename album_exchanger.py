@@ -15,7 +15,8 @@ async def hello(interaction: discord.Interaction):
 @tree.command(name="album", description="random-album!")
 async def readfile(interaction: discord.Interaction):
     try:
-        with open("albums.txt", "r") as file:
+        with open("albums.txt", "r", encoding="utf-8") as f:
+            lines = [line.strip() for line in f if line.strip()]
             choice = random.choice(lines)
         await interaction.response.send_message(choice)
     except FileNotFoundError:
