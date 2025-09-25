@@ -7,6 +7,7 @@ intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
+
 @tree.command(name="test", description="test-album")
 async def hello(interaction: discord.Interaction):
     await interaction.response.send_message("https://open.spotify.com/album/6hPkbAV3ZXpGZBGUvL6jVM?si=NSetYITLRyCFkQ6BVLIkKA")
@@ -15,6 +16,16 @@ async def hello(interaction: discord.Interaction):
 async def readfile(interaction: discord.Interaction):
     try:
         with open("albums.txt", "r") as f:
+            lines = [line.strip() for line in f if line.strip()]
+            choice = random.choice(lines)
+        await interaction.response.send_message(choice)
+    except FileNotFoundError:
+        await interaction.response.send_message("File not found.")
+
+@tree.command(name="song", description="random song!")
+async def readfile(interaction: discord.Interaction):
+    try:
+        with open("songs.txt", "r") as f:
             lines = [line.strip() for line in f if line.strip()]
             choice = random.choice(lines)
         await interaction.response.send_message(choice)
